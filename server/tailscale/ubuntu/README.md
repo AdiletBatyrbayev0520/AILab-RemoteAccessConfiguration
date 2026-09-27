@@ -1,5 +1,5 @@
 <p>
-<img src="../../../assets/icons/tailscale.svg" width="48" alt="tailscale">&nbsp;
+<img src="../../../assets/icons/tailscale.png" width="48" alt="tailscale">&nbsp;
 <img src="../../../assets/icons/ubuntu.svg" width="48" alt="ubuntu">
 </p>
 
