@@ -94,15 +94,32 @@ Test it. It should log in **without** asking for the password:
 ssh <user>@<server IP>
 ```
 
-## 5. Create a shortcut in the SSH config file
+## 5. The SSH config file
 
-Instead of typing the user and IP every time, edit the client config file:
+The client config file stores the connection settings of every server, so you do not type the user, IP and key each time. It is a plain text file without extension. Open (or create) it:
 
 ```bash
 nano ~/.ssh/config
 ```
 
-Add one block per server, then save with **Ctrl + O**, **Enter**, and exit with **Ctrl + X**:
+Save with **Ctrl + O**, **Enter**, and exit with **Ctrl + X**. Then set safe permissions (ssh refuses a config that other users can write):
+
+```bash
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/config
+```
+
+Each `Host` block describes one server:
+
+| Field | Meaning |
+|---|---|
+| `Host` | Any short name you choose. You type it instead of `user@IP`. |
+| `HostName` | Real address of the server: IP (LAN or Tailscale `100.64.x.x`) or DNS name. |
+| `User` | Account name **on the server**. |
+| `Port` | SSH port. `22` unless the server uses another one. |
+| `IdentityFile` | Path to your **private** key (from step 3). Omit it to log in with a password. |
+
+Example with several servers:
 
 ```
 Host lab-pc
@@ -110,16 +127,25 @@ Host lab-pc
     User labuser
     Port 22
     IdentityFile ~/.ssh/id_ed25519
+
+Host lab-ubuntu
+    HostName 100.64.0.12
+    User administrator
+    IdentityFile ~/.ssh/id_ed25519
+
+Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
 ```
 
-Set safe permissions (ssh refuses a config that other users can write):
+Rules:
 
-```bash
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/config
-```
+* Indent the lines under `Host` with spaces. Blocks are separated by the next `Host` line.
+* `~` means your home folder (`/home/<you>`).
+* Lines starting with `#` are comments.
 
-Now connect with just:
+Now connect with just the name:
 
 ```bash
 ssh lab-pc
@@ -127,12 +153,48 @@ ssh lab-pc
 
 The same name also works for file copy: `scp file.txt lab-pc:~/`.
 
+## 6. Connect with VS Code (Remote - SSH)
+
+VS Code can open folders and terminals on the server as if they were local. It uses the same `config` file from step 5.
+
+### Install the extension
+
+1. Open VS Code.
+2. Press **Ctrl + Shift + X** (Extensions).
+3. Search for **Remote - SSH** (publisher: Microsoft, id `ms-vscode-remote.remote-ssh`) and click **Install**.
+
+### Add the host to the config file from VS Code
+
+1. Press **Ctrl + Shift + P** and type `remote`.
+2. Choose **Remote-SSH: Open SSH Configuration File...**.
+3. Pick your user config file: `/home/<you>/.ssh/config`.
+4. Add a `Host` block (like in step 5) and save with **Ctrl + S**.
+
+Alternative: **Remote-SSH: Add New SSH Host...** and type `ssh <user>@<server IP>`. VS Code then writes the block into the config file for you.
+
+### Connect
+
+1. Press **Ctrl + Shift + P**, type `remote` and choose **Remote-SSH: Connect to Host...**.
+   You can also click the **><** button in the bottom-left corner of VS Code, or use the **Remote Explorer** icon in the left sidebar.
+2. Pick the host name from the list (e.g. `lab-pc`). It is the `Host` name from the config file.
+3. A new window opens. On the first connection:
+   * choose the **server** operating system: **Linux** (Ubuntu server) or **Windows** (Windows server);
+   * answer **Continue** to the fingerprint question;
+   * enter the server password if you did not set up a key (step 4).
+4. Wait while VS Code installs its server part on the remote host (only the first time; the host needs internet access for this).
+5. The bottom-left corner now shows **SSH: lab-pc**. Use **File → Open Folder...** to open a folder **on the server**, and **Terminal → New Terminal** to get a shell on the server.
+
+To disconnect: click **SSH: lab-pc** in the bottom-left corner and choose **Close Remote Connection**.
+
+Extensions in a remote window run on the server. Install the ones you need there (e.g. Python) from the Extensions panel: they show an **Install in SSH: lab-pc** button.
+
 ## Troubleshooting
 
 | Error | Fix |
 |---|---|
 | `Permission denied, please try again.` | Wrong password or wrong user name on the server. |
 | `Permission denied (publickey)` | The key is not in the server's `authorized_keys` (step 4), or password login is disabled on the server. |
+| VS Code: `Could not establish connection` | Check that `ssh <host>` works in a terminal first. If you chose the wrong OS, press **Ctrl + Shift + P** → **Preferences: Open User Settings (JSON)** and fix `"remote.SSH.remotePlatform"` for that host (`"linux"` or `"windows"`). |
 | `Could not resolve hostname` | Wrong IP or `Host` name. Check the server IP with `ipconfig` (Windows) or `hostname -I` (Ubuntu). |
 | `Connection timed out` | Server firewall is blocking port 22, or the server is on another network. See `server/ssh/`. |
 | `Bad owner or permissions on ~/.ssh/config` | Run `chmod 700 ~/.ssh && chmod 600 ~/.ssh/config`. |
