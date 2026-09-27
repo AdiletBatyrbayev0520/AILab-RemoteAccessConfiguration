@@ -1,4 +1,11 @@
+<p>
+<img src="../../../assets/icons/tailscale.svg" width="48" alt="tailscale">&nbsp;
+<img src="../../../assets/icons/windows.svg" width="48" alt="windows">
+</p>
+
 # Tailscale on a Windows server (AI Lab Headscale)
+
+[← Back to all guides](../../../README.md)
 
 Joins this Windows PC to the AI Lab private network (Headscale at `https://headscale.ailab-sdu.com`) so users can reach its SSH server from anywhere through its Tailscale IP (`100.64.x.x`). Who may connect is decided by the sysadmin's **Access Control List (ACL)**.
 

@@ -1,4 +1,11 @@
+<p>
+<img src="../../../assets/icons/tailscale.svg" width="48" alt="tailscale">&nbsp;
+<img src="../../../assets/icons/windows.svg" width="48" alt="windows">
+</p>
+
 # Tailscale client on Windows (AI Lab Headscale)
+
+[← Back to all guides](../../../README.md)
 
 Tailscale puts your computer into the AI Lab private network, which is managed by **Headscale** at `https://headscale.ailab-sdu.com`. After joining you can reach lab hosts from anywhere (home, university Wi-Fi, mobile hotspot) by their Tailscale IP (`100.64.x.x`), but **only the hosts the Access Control List (ACL) allows for you**.
 
@@ -60,6 +67,8 @@ tailscale ip -4
 Now you are connected to AI Lab's Headscale.
 
 ## 4. Connect to AI Lab hosts
+
+<img src="../../../assets/icons/ssh.svg" width="40" alt="SSH">&nbsp;<img src="../../../assets/icons/vscode.svg" width="40" alt="VS Code">
 
 Use the Tailscale IP of the host from `tailscale status`:
 

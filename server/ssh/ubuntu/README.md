@@ -1,4 +1,11 @@
+<p>
+<img src="../../../assets/icons/ssh.svg" width="48" alt="ssh">&nbsp;
+<img src="../../../assets/icons/ubuntu.svg" width="48" alt="ubuntu">
+</p>
+
 # OpenSSH Server on Ubuntu
+
+[← Back to all guides](../../../README.md)
 
 ## 1. Install OpenSSH Server
 

@@ -1,4 +1,11 @@
+<p>
+<img src="../../../assets/icons/ssh.svg" width="48" alt="ssh">&nbsp;
+<img src="../../../assets/icons/windows.svg" width="48" alt="windows">
+</p>
+
 # OpenSSH Client on Windows
+
+[← Back to all guides](../../../README.md)
 
 The client is the computer you connect **from**. The server must already be set up (see `server/ssh/`).
 
@@ -97,6 +104,8 @@ ssh <user>@<server IP>
 
 ## 5. The SSH config file
 
+<img src="../../../assets/icons/ssh.svg" width="40" alt="SSH">
+
 The client config file stores the connection settings of every server, so you do not type the user, IP and key each time. It is a plain text file without extension. Open (or create) it:
 
 ```powershell
@@ -148,7 +157,11 @@ ssh lab-pc
 
 The same name also works for file copy: `scp file.txt lab-pc:C:/Users/Public/`.
 
+---
+
 ## 6. Connect with VS Code (Remote - SSH)
+
+<img src="../../../assets/icons/vscode.svg" width="56" alt="VS Code">
 
 VS Code can open folders and terminals on the server as if they were local. It uses the same `config` file from step 5.
 
